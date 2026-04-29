@@ -1,0 +1,745 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Графический дизайнер</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="300e8826-b82c-8040-890f-f761fbbf8a4f" class="page sans"><header><div class="page-header-icon undefined"><img class="icon notion-static-icon" src="https://www.notion.so/icons/kind_blue.svg"/></div><h1 class="page-title" dir="auto">Графический дизайнер</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><hr id="300e8826-b82c-81e4-bcf4-f280f5d9a6b7"/></div><div style="display:contents" dir="auto"><div id="300e8826-b82c-812b-a874-cfd538c9056a" class="column-list"><div style="display:contents" dir="auto"><div id="300e8826-b82c-81b3-9417-ed56953df24f" style="width:25%" class="column"><div style="display:contents" dir="ltr"><figure id="300e8826-b82c-815c-bcf7-c4d6a6b8c792" class="image"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Frame_1597878069.png"><img style="width:384px" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Frame_1597878069.png"/></a></figure></div><div style="display:contents" dir="auto"><h1 id="300e8826-b82c-8107-bc0e-e17367f89200" class="">Контакты</h1></div><div style="display:contents" dir="auto"><hr id="32be8826-b82c-800f-b615-f24a1c7bcd04"/></div><div style="display:contents" dir="ltr"><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="31be8826-b82c-8007-82c9-dd79afad915e"><div style="font-size:1.5em"><img class="icon notion-static-icon" src="https://www.notion.so/icons/phone-call_blue.svg"/></div><div style="width:100%">+7 (985) 249-97-85</div></figure></div><div style="display:contents" dir="ltr"><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="31be8826-b82c-8027-b938-ea67730cb8a9"><div style="font-size:1.5em"><img class="icon notion-static-icon" src="https://www.notion.so/icons/send_blue.svg"/></div><div style="width:100%">@YuriAckerman</div></figure></div><div style="display:contents" dir="ltr"><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="300e8826-b82c-81f0-82aa-d192146d187f"><div style="font-size:1.5em"><img class="icon notion-static-icon" src="https://www.notion.so/icons/mail_blue.svg"/></div><div style="width:100%">yuri.ackerman1992@gmail.com</div></figure></div><div style="display:contents" dir="ltr"><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="330e8826-b82c-80ba-8764-c8e8fb1651a1"><div style="font-size:1.5em"><img class="icon notion-static-icon" src="https://www.notion.so/icons/link_blue.svg"/></div><div style="width:100%"><a href="https://hh.ru/resume/8579c3f8ff101b24cc0039ed1f6a45476d3275">HH.RU / Графический дизайнер</a></div></figure></div><div style="display:contents" dir="auto"><h1 id="300e8826-b82c-81e7-9509-fa9bc0e0abe5" class="">Курсы</h1></div><div style="display:contents" dir="auto"><hr id="300e8826-b82c-8153-a79d-c5250b52fcd1"/></div><div style="display:contents" dir="ltr"><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="300e8826-b82c-81e1-8454-e7be7165a502"><div style="font-size:1.5em"><img class="icon notion-static-icon" src="https://www.notion.so/icons/official-document_blue.svg"/></div><div style="width:100%"><div style="display:contents" dir="auto"><p id="32be8826-b82c-803f-ae8e-e6cb817627e5" class=""><strong>UX/UI дизайн</strong></p></div><div style="display:contents" dir="auto"><blockquote id="32be8826-b82c-8033-ab1c-deda5fa0145d" class="">Yudaev School<br/>2024</blockquote></div></div></figure></div><div style="display:contents" dir="ltr"><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="32be8826-b82c-8066-8342-d48c8f0bfc88"><div style="font-size:1.5em"><img class="icon notion-static-icon" src="https://www.notion.so/icons/official-document_blue.svg"/></div><div style="width:100%"><div style="display:contents" dir="auto"><p id="32be8826-b82c-8093-8558-f8fabc51859a" class=""><strong>Графический дизайн</strong></p></div><div style="display:contents" dir="auto"><blockquote id="32be8826-b82c-800f-b09a-e9b4175e9db2" class="">Московская академия дизайн-профессий Pentaschool<br/>2023</blockquote></div></div></figure></div><div style="display:contents" dir="auto"><h1 id="300e8826-b82c-810c-b252-eea07d92c69b" class=""><strong>Инструменты</strong></h1></div><div style="display:contents" dir="auto"><hr id="300e8826-b82c-81b8-b8a8-df23e4e221ad"/></div><div style="display:contents" dir="ltr"><figure id="32be8826-b82c-8114-9d7e-c602e78ea9e1" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Adobe%20Illustrator%2032be8826b82c81149d7ec602e78ea9e1.html"><img class="icon" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Adobe%20Illustrator/logos_adobe-illustrator.svg"/>Adobe Illustrator</a></figure></div><div style="display:contents" dir="ltr"><figure id="32be8826-b82c-8180-a8a9-ea4c03627817" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Adobe%20InDesign%2032be8826b82c8180a8a9ea4c03627817.html"><img class="icon" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Adobe%20InDesign/logos_adobe-indesign.svg"/>Adobe InDesign</a></figure></div><div style="display:contents" dir="ltr"><figure id="32be8826-b82c-81d2-9f11-d70257009160" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Adobe%20Lightroom%2032be8826b82c81d29f11d70257009160.html"><img class="icon" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Adobe%20Lightroom/logos_adobe-lightroom.svg"/>Adobe Lightroom</a></figure></div><div style="display:contents" dir="ltr"><figure id="32be8826-b82c-8109-8589-f9d059949169" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Adobe%20Photoshop%2032be8826b82c81098589f9d059949169.html"><img class="icon" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Adobe%20Photoshop/logos_adobe-photoshop.svg"/>Adobe Photoshop</a></figure></div><div style="display:contents" dir="ltr"><figure id="32be8826-b82c-8179-aae1-f2aa6205892f" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Figma%2032be8826b82c8179aae1f2aa6205892f.html"><img class="icon" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Figma/logos_figma.svg"/>Figma</a></figure></div><div style="display:contents" dir="ltr"><figure id="32be8826-b82c-8158-a052-ec2127057d41" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Procreate%2032be8826b82c8158a052ec2127057d41.html"><img class="icon" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Procreate/logos_procreate.svg"/>Procreate</a></figure></div><div style="display:contents" dir="ltr"><figure id="32be8826-b82c-8176-924b-c52e43e76c28" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Wondershare%20Filmora%2032be8826b82c8176924bc52e43e76c28.html"><img class="icon" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Wondershare%20Filmora/logos_filmora.svg"/>Wondershare  Filmora</a></figure></div><div style="display:contents" dir="ltr"><figure id="32be8826-b82c-81f7-aef2-e1d579e5899f" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/ChatGPT%2032be8826b82c81f7aef2e1d579e5899f.html"><img class="icon" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/ChatGPT/logos_openai-icon.svg"/>ChatGPT</a></figure></div><div style="display:contents" dir="ltr"><figure id="32be8826-b82c-8186-825f-f1746399f576" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Krea%2032be8826b82c8186825ff1746399f576.html"><img class="icon" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Krea/logos_krea.svg"/>Krea </a></figure></div><div style="display:contents" dir="ltr"><figure id="32be8826-b82c-815f-8d15-e44377d16ab1" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Midjourney%2032be8826b82c815f8d15e44377d16ab1.html"><img class="icon" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/Midjourney/logos_midjourney.svg"/>Midjourney</a></figure></div><div style="display:contents" dir="auto"><p id="32ee8826-b82c-80b8-8775-c55c4fafec0a" class="">
+</p></div></div></div><div style="display:contents" dir="auto"><div id="300e8826-b82c-81c9-8c4e-d089eae6d915" style="width:75%" class="column"><div style="display:contents" dir="auto"><h1 id="300e8826-b82c-8157-b642-fb45975b9c9e" class="block-color-blue"><mark class="highlight-default_background">Обо мне</mark></h1></div><div style="display:contents" dir="auto"><hr id="300e8826-b82c-81a1-8b28-e4af6217ccd5"/></div><div style="display:contents" dir="auto"><p id="329e8826-b82c-80fa-8220-db75c02c8ad7" class="">Графический дизайнер с опытом работы в брендинге, digital и визуальном продакшне. Занимаюсь разработкой и развитием визуальных систем: от концепции и фирменного стиля до масштабирования и внедрения в рабочие процессы.</p></div><div style="display:contents" dir="auto"><p id="329e8826-b82c-80c9-8c8b-c356af958983" class="">Имею опыт как построения визуальной коммуникации с нуля (EdTech), так и работы в условиях многозадачности и коммерческого потока (e-commerce, полиграфия, каталоги). Понимаю, как дизайн влияет на восприятие продукта и участвует в достижении бизнес-результатов.</p></div><div style="display:contents" dir="auto"><p id="329e8826-b82c-803e-b791-c37879d2a373" class="">Использую ИИ как вспомогательный инструмент для ускорения процессов, не заменяя ими работу с композицией, типографикой и визуальной логикой.</p></div><div style="display:contents" dir="auto"><p id="329e8826-b82c-80dc-9b4e-d8ef2c1a88a2" class="">Сфокусирован на развитии в брендинге и визуальных коммуникациях, интересны задачи, связанные с построением и развитием фирменного стиля.</p></div><div style="display:contents" dir="auto"><hr id="32be8826-b82c-80b7-8661-da5e80a5c96c"/></div><div style="display:contents" dir="auto"><h1 id="31be8826-b82c-80b5-b028-fff01fd1000e" class="">Направления работы</h1></div><div style="display:contents" dir="auto"><hr id="300e8826-b82c-8132-ae78-f44d4a6beec9"/></div><div style="display:contents" dir="ltr"><div id="300e8826-b82c-81cd-ac49-fe518cc6f656" class="collection-content"><h4 class="collection-title">Нажмите на направление, чтобы посмотреть подробнее</h4><div class="collection-content-wrapper"><table class="collection-content"><thead><tr><th><span class="icon property-icon"><img src="https://www.notion.so/icons/font_gray.svg" style="width:14px;height:14px;display:block"/></span>Name</th></tr></thead><tbody><tr id="300e8826-b82c-814b-af6a-c4a07c7b871d"><td class="cell-title"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9D%D0%B0%D0%B6%D0%BC%D0%B8%D1%82%D0%B5%20%D0%BD%D0%B0%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5,%20%D1%87%D1%82%D0%BE%D0%B1%D1%8B%20%D0%BF%D0%BE%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C%20%D0%BF%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%B5%D0%B5/%D0%90%D0%B9%D0%B4%D0%B5%D0%BD%D1%82%D0%B8%D0%BA%D0%B0%20%D0%B8%20%D0%B1%D1%80%D0%B5%D0%BD%D0%B4%D0%B8%D0%BD%D0%B3%20300e8826b82c814baf6ac4a07c7b871d.html"><img class="icon notion-static-icon" src="https://www.notion.so/icons/kind_blue.svg"/>Айдентика и брендинг</a></td></tr><tr id="300e8826-b82c-816e-bee4-f1903243dc2e"><td class="cell-title"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9D%D0%B0%D0%B6%D0%BC%D0%B8%D1%82%D0%B5%20%D0%BD%D0%B0%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5,%20%D1%87%D1%82%D0%BE%D0%B1%D1%8B%20%D0%BF%D0%BE%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C%20%D0%BF%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%B5%D0%B5/%D0%9F%D0%BE%D0%BB%D0%B8%D0%B3%D1%80%D0%B0%D1%84%D0%B8%D1%8F%20%D0%B8%20%D0%BF%D1%80%D0%B5%D0%B4%D0%BF%D0%B5%D1%87%D0%B0%D1%82%D0%BD%D0%B0%D1%8F%20%D0%BF%D0%BE%D0%B4%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BA%D0%B0%20300e8826b82c816ebee4f1903243dc2e.html"><img class="icon notion-static-icon" src="https://www.notion.so/icons/print_blue.svg"/>Полиграфия и предпечатная подготовка</a></td></tr><tr id="32be8826-b82c-806e-994a-fbb42313d7de"><td class="cell-title"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9D%D0%B0%D0%B6%D0%BC%D0%B8%D1%82%D0%B5%20%D0%BD%D0%B0%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5,%20%D1%87%D1%82%D0%BE%D0%B1%D1%8B%20%D0%BF%D0%BE%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C%20%D0%BF%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%B5%D0%B5/Digital-%D0%BC%D0%B0%D1%80%D0%BA%D0%B5%D1%82%D0%B8%D0%BD%D0%B3%2032be8826b82c806e994afbb42313d7de.html"><img class="icon notion-static-icon" src="https://www.notion.so/icons/laptop_blue.svg"/>Digital-маркетинг</a></td></tr><tr id="300e8826-b82c-8150-8308-de79b1d07377"><td class="cell-title"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9D%D0%B0%D0%B6%D0%BC%D0%B8%D1%82%D0%B5%20%D0%BD%D0%B0%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5,%20%D1%87%D1%82%D0%BE%D0%B1%D1%8B%20%D0%BF%D0%BE%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C%20%D0%BF%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%B5%D0%B5/%D0%A4%D0%BE%D1%82%D0%BE%D0%B3%D1%80%D0%B0%D1%84%D0%B8%D1%8F%20%D0%B8%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%20%D1%81%20%D0%B8%D0%B7%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F%D0%BC%D0%B8%20300e8826b82c81508308de79b1d07377.html"><img class="icon notion-static-icon" src="https://www.notion.so/icons/camera_blue.svg"/>Фотография и работа с изображениями</a></td></tr><tr id="300e8826-b82c-818b-ab49-eddd63cfd476"><td class="cell-title"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9D%D0%B0%D0%B6%D0%BC%D0%B8%D1%82%D0%B5%20%D0%BD%D0%B0%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5,%20%D1%87%D1%82%D0%BE%D0%B1%D1%8B%20%D0%BF%D0%BE%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C%20%D0%BF%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%B5%D0%B5/%D0%9F%D1%80%D0%B5%D0%B7%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D0%B8%20%D0%B8%20%D0%B2%D0%B8%D0%B7%D1%83%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20300e8826b82c818bab49eddd63cfd476.html"><img class="icon notion-static-icon" src="https://www.notion.so/icons/chart-line_blue.svg"/>Презентации и визуализация данных</a></td></tr><tr id="32be8826-b82c-8036-820c-f898f6a8775c"><td class="cell-title"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9D%D0%B0%D0%B6%D0%BC%D0%B8%D1%82%D0%B5%20%D0%BD%D0%B0%20%D0%BD%D0%B0%D0%BF%D1%80%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5,%20%D1%87%D1%82%D0%BE%D0%B1%D1%8B%20%D0%BF%D0%BE%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C%20%D0%BF%D0%BE%D0%B4%D1%80%D0%BE%D0%B1%D0%BD%D0%B5%D0%B5/%D0%A1%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%D1%82%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F%20%D0%B2%D0%B8%D0%B7%D1%83%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D1%85%20%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%BE%D0%B2%2032be8826b82c8036820cf898f6a8775c.html"><img class="icon notion-static-icon" src="https://www.notion.so/icons/extension_blue.svg"/>Систематизация визуальных процессов</a></td></tr></tbody></table></div><br/><br/></div></div><div style="display:contents" dir="auto"><hr id="31be8826-b82c-8007-8143-ef1bae28e9b0"/></div><div style="display:contents" dir="auto"><h1 id="32ce8826-b82c-806c-a2dd-c03a6e5911f9" class="">Проекты и работы</h1></div><div style="display:contents" dir="auto"><hr id="32ce8826-b82c-8093-8783-e6ba4f71bb5b"/></div><div style="display:contents" dir="auto"><p id="32ce8826-b82c-801b-add5-e464a6ce7848" class="">Реальные рабочие проекты — от идеи до готового результата.</p></div><div style="display:contents" dir="ltr"><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="32ce8826-b82c-80bb-9f72-e9c64d6eade9"><div style="font-size:1.5em"><img class="icon" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/logos_mm.svg"/></div><div style="width:100%"><div style="display:contents" dir="auto"><h2 id="32ce8826-b82c-8079-8f1a-c2a07d5015b0" class="">Мой Мир</h2></div><div style="display:contents" dir="auto"><blockquote id="32ce8826-b82c-80f0-a9fa-dd36eca4a27f" class="">Графический дизайнер<br/>Май 2025 — Март 2026</blockquote></div></div></figure></div><div style="display:contents" dir="ltr"><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="33de8826-b82c-800c-a66f-ff32a256a19f"><div style="font-size:1.5em"><img class="icon notion-static-icon" src="https://www.notion.so/icons/chart-mixed_pink.svg"/></div><div style="width:100%"><div style="display:contents" dir="auto"><h3 id="33de8826-b82c-808e-8177-fe6511e058d1" class="">Результаты:</h3></div><div style="display:contents" dir="auto"><ul id="33de8826-b82c-804c-a48d-c6289c7d73e6" class="bulleted-list"><li style="list-style-type:disc">разработка и подготовка к печати 20-страничного каталога (тираж 7000 экз.), использовавшегося в продажах и обеспечившего выручку около 1,2 млн руб. (по данным внутренней аналитики);</li></ul></div><div style="display:contents" dir="auto"><ul id="33de8826-b82c-8019-ad79-c0a4f5fcdef4" class="bulleted-list"><li style="list-style-type:disc">выполнение более 300 разноплановых задач за 11 месяцев (95% от общего входящего потока) в условиях высокой многозадачности.</li></ul></div></div></figure></div><div style="display:contents" dir="auto"><div id="33de8826-b82c-8063-b6bd-ecb5f0ba9b97" class="column-list"><div style="display:contents" dir="auto"><div id="33de8826-b82c-809b-89a4-cf8ed844401f" style="width:100%" class="column"><div style="display:contents" dir="ltr"><figure id="33de8826-b82c-809e-bced-eb9903042f65" class="image" style="text-align:left"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_1.svg"><img style="width:528px" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_1.svg"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="33de8826-b82c-8014-a991-f9fb72fdcfd8" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%A1%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B%2033de8826b82c8014a991f9fb72fdcfd8.html"><img class="icon notion-static-icon" src="https://www.notion.so/icons/arrow-right-basic_pink.svg"/>Смотреть работы</a></figure></div><div style="display:contents" dir="auto"><p id="33de8826-b82c-8013-91aa-e96e343a1c18" class="">Полный цикл разработки каталога для собственной торговой марки. Проектирование модульной сетки, вёрстка, подготовка к печати.</p></div><div style="display:contents" dir="auto"><hr id="33de8826-b82c-8018-a5de-d9559aec9555"/></div><div style="display:contents" dir="ltr"><figure id="33de8826-b82c-804c-83db-fa8760126a3e" class="image" style="text-align:left"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_4.svg"><img style="width:528px" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_4.svg"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="33de8826-b82c-80ab-8c84-f4390dd81534" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%A1%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B%2033de8826b82c80ab8c84f4390dd81534.html"><img class="icon notion-static-icon" src="https://www.notion.so/icons/arrow-right-basic_pink.svg"/>Смотреть работы</a></figure></div><div style="display:contents" dir="auto"><p id="33de8826-b82c-8089-9f44-c2e4d2fa5b1f" class="">Проектирование упаковки и подготовка макетов к производству. Восстановление макетов по физическим образцам, вёрстка инструкций и сопроводительных материалов.</p></div><div style="display:contents" dir="auto"><hr id="34be8826-b82c-80bf-b1c8-ff273db8011c"/></div><div style="display:contents" dir="ltr"><figure id="348e8826-b82c-80b5-b593-e4a66946e5a0" class="image" style="text-align:left"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_5.svg"><img style="width:528px" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_5.svg"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="348e8826-b82c-8069-849e-d54cb96a5660" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%A1%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B%20348e8826b82c8069849ed54cb96a5660.html"><img class="icon notion-static-icon" src="https://www.notion.so/icons/arrow-right-basic_pink.svg"/>Смотреть работы</a></figure></div><div style="display:contents" dir="auto"><p id="348e8826-b82c-801a-8866-d7d067be498c" class="">Разработка печатных материалов и сопроводительной продукции. Работа с различными форматами и требованиями печатного производства.</p></div></div></div><div style="display:contents" dir="auto"><div id="33de8826-b82c-80b4-903d-f14b96081c23" style="width:100%" class="column"><div style="display:contents" dir="ltr"><figure id="33de8826-b82c-802f-887a-c2e8b915c71f" class="image" style="text-align:left"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_2.svg"><img style="width:528px" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_2.svg"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="33de8826-b82c-80ca-9c5d-e1c661f8dfcf" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%A1%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B%2033de8826b82c80ca9c5de1c661f8dfcf.html"><img class="icon notion-static-icon" src="https://www.notion.so/icons/arrow-right-basic_pink.svg"/>Смотреть работы</a></figure></div><div style="display:contents" dir="auto"><p id="33de8826-b82c-800b-adaf-d6735aba004f" class="">Разработка визуальных систем для собственных торговых марок. Создание логобуков и материалов для использования в digital и производстве.</p></div><div style="display:contents" dir="auto"><hr id="33de8826-b82c-808a-821f-e304e15aced2"/></div><div style="display:contents" dir="ltr"><figure id="33de8826-b82c-801a-ac10-cfd87e587cfa" class="image" style="text-align:left"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_3.svg"><img style="width:528px" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_3.svg"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="33de8826-b82c-8053-b292-c5b3f5aa4e70" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%A1%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B%2033de8826b82c8053b292c5b3f5aa4e70.html"><img class="icon notion-static-icon" src="https://www.notion.so/icons/arrow-right-basic_pink.svg"/>Смотреть работы</a></figure></div><div style="display:contents" dir="auto"><p id="33de8826-b82c-8011-91f7-c6001e78e052" class="">Создание и масштабирование визуального контента для рекламных и продуктовых задач. Адаптация материалов под разные площадки и форматы.</p></div></div></div></div></div><div style="display:contents" dir="auto"><hr id="32ce8826-b82c-807b-8476-c066bfec59ab"/></div><div style="display:contents" dir="ltr"><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="32ce8826-b82c-80ea-b1f9-ca984c769e03"><div style="font-size:1.5em"><img class="icon" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/logos_map.svg"/></div><div style="width:100%"><div style="display:contents" dir="auto"><h2 id="32ce8826-b82c-806b-8150-db9f0efc851e" class="">Московская академия предпринимательства</h2></div><div style="display:contents" dir="auto"><blockquote id="32ce8826-b82c-8078-be64-c0e90c9a9015" class="">Графический дизайнер / Специалист по продвижению бренда<br/>Апрель 2024 — Март 2025</blockquote></div></div></figure></div><div style="display:contents" dir="ltr"><figure class="block-color-default callout" style="white-space:pre-wrap;display:flex" id="32ce8826-b82c-802b-9c54-e9015ce45e21"><div style="font-size:1.5em"><img class="icon notion-static-icon" src="https://www.notion.so/icons/chart-mixed_green.svg"/></div><div style="width:100%"><div style="display:contents" dir="auto"><h3 id="32ce8826-b82c-808f-9e53-d5bff0e21062" class="">Результаты:</h3></div><div style="display:contents" dir="auto"><ul id="32ce8826-b82c-80fb-97dd-fbd80cb7d53a" class="bulleted-list"><li style="list-style-type:disc">рост аудитории и вовлеченности: Telegram +41,4% / ER +261%, ВКонтакте +142,7% / ER +133,3%;</li></ul></div><div style="display:contents" dir="auto"><ul id="32ce8826-b82c-80c8-a5bb-d241c430fc82" class="bulleted-list"><li style="list-style-type:disc">рост выручки от социальных сетей: +1075% за счёт редизайна воронки и упаковки продуктов;</li></ul></div><div style="display:contents" dir="auto"><ul id="32ce8826-b82c-8033-b2b7-d9562bf33c9c" class="bulleted-list"><li style="list-style-type:disc">масштабирование визуальной системы на 20 региональных представительств и 6 региональных приёмных комиссий.</li></ul></div></div></figure></div><div style="display:contents" dir="auto"><div id="32ce8826-b82c-80ff-8275-f3fa3eced85b" class="column-list"><div style="display:contents" dir="auto"><div id="32ce8826-b82c-807f-af55-e4ad4c247387" style="width:100%" class="column"><div style="display:contents" dir="ltr"><figure id="32ce8826-b82c-8091-92c5-d891aacd249d" class="image" style="text-align:left"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_2%201.svg"><img style="width:528px" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_2%201.svg"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="32ce8826-b82c-8026-b6fa-f50d00a36830" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%A1%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B%2032ce8826b82c8026b6faf50d00a36830.html"><img class="icon notion-static-icon" src="https://www.notion.so/icons/arrow-right-basic_green.svg"/>Смотреть работы</a></figure></div><div style="display:contents" dir="auto"><p id="32ce8826-b82c-8040-b10e-e06aff3c0f44" class="">Визуальная и смысловая переработка образовательного продукта. Редизайн материалов и доработка логики игры. <br/></p></div></div></div><div style="display:contents" dir="auto"><div id="32ce8826-b82c-80b7-bd06-fde2364704a5" style="width:100%" class="column"><div style="display:contents" dir="ltr"><figure id="32ce8826-b82c-8004-9900-f577aadc296f" class="image" style="text-align:left"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_4%201.svg"><img style="width:528px" src="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_4%201.svg"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="32ce8826-b82c-802a-ae4e-ee82294bb7c5" class="link-to-page"><a href="%D0%93%D1%80%D0%B0%D1%84%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80/%D0%A1%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C%20%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B%2032ce8826b82c802aae4eee82294bb7c5.html"><img class="icon notion-static-icon" src="https://www.notion.so/icons/arrow-right-basic_green.svg"/>Смотреть работы</a></figure></div><div style="display:contents" dir="auto"><p id="32ce8826-b82c-80d5-a73a-fd2c8b87d120" class="">Создание визуала с использованием нейросетей и последующей ручной доработки. Использование ИИ для ускорения работы и расширения визуальных возможностей.</p></div></div></div></div></div></div></div></div></div><div style="display:contents" dir="auto"><hr id="300e8826-b82c-811b-babc-c91c8a59cc8d"/></div><div style="display:contents" dir="auto"><p id="32ce8826-b82c-80b4-92cf-e80615341be8" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
